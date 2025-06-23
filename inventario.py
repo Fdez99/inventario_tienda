@@ -1,5 +1,5 @@
 # gestion_inventario_corregido.py
-
+import pandas as pd
 from rich.console import Console
 console = Console()
 
@@ -20,6 +20,13 @@ def otra_mas():
     else:
         console.print('¡Hasta pronto! 😊', style="#4c9ef0")
         quit()
+
+# ------------------------------------
+
+def mostrar_inventario(inventario): 
+    df_inventario = pd.DataFrame.from_dict(inventario, orient='index')
+    console.print(df_inventario, style="#ffa65d")
+    otra_mas()
 
 # ------------------------------------
 
@@ -141,19 +148,21 @@ def vender():
 # Función principal
 
 def gestion_inventario():
-    console.print('Elige opción (1/2/3/4/5/0):  \n1. Consultar\n2. Agregar\n3. Agregar nuevo\n4. Eliminar\n5. Vender\n0. Salir\n', style="#d6c669")
+    console.print('Elige opción (1/2/3/4/5/6/0):  \n1. Consultar inventario\n2. Consultar por producto\n3. Agregar\n4. Agregar nuevo\n5. Eliminar\n6. Vender\n0. Salir\n', style="#d6c669")
     opcion = input('Elige opción: ')
 
     match opcion:
         case '1':
-            consultar()
+            mostrar_inventario(inventario)
         case '2':
-            agregar()
+            consultar()
         case '3':
-            agregar_nuevo()
+            agregar()
         case '4':
-            eliminar()
+            agregar_nuevo()
         case '5':
+            eliminar()
+        case '6':
             vender()
         case '0':
             console.print('¡Hasta pronto! 👋', style="#4c9ef0")
