@@ -1,15 +1,20 @@
 # gestion_inventario_corregido.py
 import pandas as pd
+import csv
 from rich.console import Console
 console = Console()
 
 # Inventario inicial
-inventario = {
-    'galletas': {'cantidad': 10, 'precio': 3.90},
-    'arroz': {'cantidad': 14, 'precio': 2.90},
-    'queso': {'cantidad': 8, 'precio': 6.90},
-    'cerveza': {'cantidad': 22, 'precio': 1.90}
-}
+with open('inventario.csv', newline='', encoding='utf-8') as f:
+    lector = csv.reader(f)
+    inventario = {
+        linea[0]: {
+            'cantidad': int(linea[1]),
+            'precio': float(linea[2])
+        } for linea in lector
+    }
+
+print(inventario)
 
 # ------------------- Funciones ------------------- #
 
@@ -20,6 +25,15 @@ def otra_mas():
     else:
         console.print('¡Hasta pronto! 😊', style="#4c9ef0")
         quit()
+
+# ------------------------------------
+
+def actualizar_inventario(archivo):
+    with open(archivo, 'w', newline='', encoding='utf-8') as f:
+            escritor = csv.writer(f)
+            for producto, datos in inventario.items():
+                escritor.writerow([producto, datos['cantidad'], f'{datos['precio']:.2f}'])
+    return archivo
 
 # ------------------------------------
 
@@ -55,6 +69,7 @@ def agregar():
     else:
         console.print('Producto actualizado', style="#a478f5")
         console.print(f"{producto_existente.upper()}: Unidades en almacén: {inventario[producto_existente]['cantidad']} - Precio/ud: {inventario[producto_existente]['precio']:.2f}€", style="#a478f5")
+        actualizar_inventario('inventario.csv')
         return inventario
     finally:
         otra_mas()
@@ -87,6 +102,7 @@ def agregar_nuevo():
     else:
         console.print('Nuevo producto añadido', style="#2abe63")
         console.print(f"{nuevo_producto.upper()}: Unidades en almacén: {inventario[nuevo_producto]['cantidad']} - Precio/ud: {inventario[nuevo_producto]['precio']:.2f}€", style="#2abe63")
+        actualizar_inventario('inventario.csv')
         return inventario
     finally:
         otra_mas()
@@ -106,6 +122,7 @@ def eliminar():
     else:
         del inventario[producto_kaputt]
         console.print(f'Producto eliminado: {producto_kaputt.upper()}', style="#ca3e3e")
+        actualizar_inventario('inventario.csv')
         return inventario
     finally:
         otra_mas()
@@ -139,6 +156,7 @@ def vender():
     except ValueError:
         console.print("❌ Introduce un número válido de unidades", style="#fdb897")
     else:
+        actualizar_inventario('inventario.csv')
         return inventario
     finally:
         otra_mas()
