@@ -8,4 +8,5 @@ Permite:
 💲 Vender productos  
 📝 El inventario se guarda en un archivo .csv  
 
-
+Se habla poco de lo bueno que es el *Flick of the Switch*; también os lo digo.  
+https://www.youtube.com/watch?v=DWKcJwuZnzE
